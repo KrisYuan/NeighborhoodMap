@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Neighborhood Map</title>
+		<link rel="stylesheet" href="css/style.css">
+	</head>
+	<body>
+		<div class="container row">
+		<!-- Search Places -->
+		<div id="side-content" class="col-md-4">
+			<form id="search-form-container" class="search-form-container">
+				<label for="search-place">Place:</label>
+				<input id="search-place" placeholder="Search by name" type="text" data-bind="value: filter, valueUpdate: 'afterkeydown'">
+				<!-- <button id="search-btn">Search</button> -->
+			</form>
+			<ul class="location-list" data-bind="foreach: filteredItems">
+				<li class="location-item" data-bind="text: title, click: $parent.listItemClicked"></li>
+			</ul>
+		</div>
+		<!-- Google Map -->
+		<div id="main-content" class="col-md-8">
+			<div class="toggle">
+        		<div id="hamburger">
+            		<a href="#" class="menu-icon-link" data-bind="click: toggleSidebar">
+                		<img src = "img/hamburger.svg" alt="MENU">
+            		</a>
+        		</div>
+    		</div>
+
+			<div id="map"></div>
+			<div id="error-handling"><div>
+		</div>
+		<!-- Load Script -->
+		<script src="js/jquery-3.1.1.min.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+		<script src="js/knockout.js"></script>
+		<script src="js/app.js"></script>
+		<!-- Google Map API Key: AIzaSyBqi65OO0wE8GWjaRpdyMCsx1qZLs7KMwQ -->
+		<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBqi65OO0wE8GWjaRpdyMCsx1qZLs7KMwQ&callback=initMap" onerror="handleError()"></script>
+		</div>
+	</body>
+</html>
