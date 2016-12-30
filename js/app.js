@@ -131,14 +131,14 @@ var ViewModel = function() {
 
   this.listItemClicked = function(location) {
     google.maps.event.trigger(location.marker,'click');
-  }
+  };
 
   this.showSidebar = ko.observable();
   this.sideContent = document.getElementById('side-content');
   this.toggleSidebar = function(){
     self.showSidebar(!self.showSidebar());
     self.sideContent.style.display = self.showSidebar() === true ? "inline-block" : "none";
-   }
+   };
 };
 
 
