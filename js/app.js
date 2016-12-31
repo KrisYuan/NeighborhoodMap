@@ -48,16 +48,20 @@ var LocationItem = function (data) {
          map: map,
          title: String(location.title())
      });
-	var displayTitle, contentStr, wikiLink;
+  var displayTitle, contentStr, wikiLink;
   var searchWiki = location.title();
   var contentTemplete;
-  contentTemplete = '<p>Sorry, no information avaliable, please try again later.<p>';
-  location.infowindow = new google.maps.InfoWindow({content: contentTemplete});
-	$.ajax({
-  		url: wikiURL + searchWiki,
-  		dataType: 'jsonp',
-  		jsonp: "callback",
-  		success: function(response){
+  // contentTemplete = '<p>Sorry, no information avaliable, please try again later.<p>';
+  this.infowindow = new google.maps.InfoWindow();
+	
+	// Add listener to animate and open infoWindow upon click
+  this.marker.addListener('click', function toggleBounce() {
+
+  	$.ajax({
+  			url: wikiURL + searchWiki,
+  			dataType: 'jsonp',
+  			jsonp: "callback",
+  		}).done(function (response) {
   			//The response is an array which contains four objects.
   			// Object in index 1 is title. Display the first title.
   			displayTitle = response[1][0];
@@ -66,47 +70,19 @@ var LocationItem = function (data) {
   			// Object in index 3 is link array. Display the first link.
   			wikiLink = response[3][0];
 
-  		    contentTemplete = '<div id="content">'+
-      		'<h1 id="headline">'+ displayTitle +'</h1>'+
-      		'<div id="bodyContent">'+
-      		'<p>'+ contentStr +'</p>'+
-      		'<p>WikiLink: <a href="'+ wikiLink +'">'+ wikiLink +'</a> '+
-      		'</p>'+
-      		'</div>'+
-      		'</div>';
-        	location.infowindow = new google.maps.InfoWindow({content: contentTemplete});
-  		},
-  		error: function(e){
+        contentTemplete = '<div id="content">'+
+      '<h1 id="headline">'+ displayTitle +'</h1>'+
+      '<div id="bodyContent">'+
+      '<p>'+ contentStr +'</p>'+
+      '<p>WikiLink: <a href="'+ wikiLink +'">'+ wikiLink +'</a> '+
+      '</p>'+
+      '</div>'+
+      '</div>';
+        location.infowindow.setContent(contentTemplete);
+  		}).fail(function (e) {
   			contentTemplete = '<p>Sorry, no information avaliable, please try again later.<p>';
-         	location.infowindow = new google.maps.InfoWindow({content: contentTemplete});
-  		}
-  	});
-    // }).done(function (response) {
-  		// 	//The response is an array which contains four objects.
-  		// 	// Object in index 1 is title. Display the first title.
-  		// 	displayTitle = response[1][0];
-  		// 	// Object in index 2 is detail information. Display the first detal information.
-  		// 	contentStr = response[2][0];
-  		// 	// Object in index 3 is link array. Display the first link.
-  		// 	wikiLink = response[3][0];
-
-    //     contentTemplete = '<div id="content">'+
-    //   '<h1 id="headline">'+ displayTitle +'</h1>'+
-    //   '<div id="bodyContent">'+
-    //   '<p>'+ contentStr +'</p>'+
-    //   '<p>WikiLink: <a href="'+ wikiLink +'">'+ wikiLink +'</a> '+
-    //   '</p>'+
-    //   '</div>'+
-    //   '</div>';
-    //     location.infowindow = new google.maps.InfoWindow({content: contentTemplete});
-  		// }).fail(function (e) {
-  		// 	contentTemplete = '<p>Sorry, no information avaliable, please try again later.<p>';
-    //     location.infowindow = new google.maps.InfoWindow({content: contentTemplete});
-  		// });
-
-	// Add listener to animate and open infoWindow upon click
-  this.marker.addListener('click', function toggleBounce() {
-
+        	location.infowindow.setContent(contentTemplete);
+  		});
       // Open infoWindow
       location.infowindow.open(map, location.marker);
 
